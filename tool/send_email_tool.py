@@ -23,27 +23,33 @@ def send_email_tool(to:str,subject:str,content:str)->str:
     """
     try:
         #读取配置文件信息
-        email = os.getenv("EMAIL_TO")
         host = os.getenv("EMAIL_HOSt")
         port = os.getenv("EMAIL_PORT")
+        port_tls = os.getenv('EMAIL_PORT_TLS')
+        sender = os.getenv("EMAIL_SENDER")
         password = os.getenv("EMAIL_PASSWORD")
         #判断配置是否读取成功
-        if not to or not host or not port or not password:
+        if not sender or not host or not port or not password:
             return "邮件配置读取失败"
-        #创建邮件对象
+        # 创建邮件对象
         msg = MIMEText(content)
+        # 发件人
+        msg["From"] = sender
         #收件人
         msg["To"] =to
         #主题
         msg["Subject"] = subject
-        #发件人
-        msg["From"] = email
-        #创建一个链接邮件服务器的地址
-        with  smtplib.SMTP_SSL(host,int(port)) as smtp:
-            #登录邮件服务器
-            smtp.login(to,password)
-            #发邮件
-            smtp.sendmail(email,to,msg.as_string())
+
+
+
+        # with  smtplib.SMTP_SSL(host,int(port)) as smtp:
+        with  smtplib.SMTP_SSL(host, port) as smtp:
+            smtp.login(sender,password)
+            smtp.sendmail(sender,to,msg.as_string())
+        # with smtplib.SMTP(host, port_tls) as smtp:
+        #     smtp.starttls()
+        #     smtp.login(sender, password)
+        #     smtp.sendmail(sender, to, msg.as_string())
         return "邮件发送成功"
     except Exception as e:
         print(f"邮件发送异常{e}")
@@ -51,7 +57,7 @@ def send_email_tool(to:str,subject:str,content:str)->str:
 
 if __name__ =="__main__":
     rs = send_email_tool.invoke({
-        "to":"767920412@qq.com",
+        "to":"1260171885@qq.com",
         "subject":"测试",
         "content":"这是一封测试邮件"
     })

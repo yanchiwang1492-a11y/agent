@@ -31,13 +31,13 @@ class MyModel:
             #创建模型
             MyModel._local_model = ChatOpenAI(
                 model= os.getenv("MODEL_LOCAL_NAME"),
-                #api_key="ddd",
+                api_key="",
                 base_url=os.getenv("LOCAL_URL"),
                 streaming=True,#开启流式输出
             )
         return MyModel._local_model
 if __name__ =="__main__":
-    model = MyModel.get_local_model()
+    model = MyModel.get_model()
     rs = model.invoke("你好")
     print(rs)
 
