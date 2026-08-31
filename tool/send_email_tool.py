@@ -20,6 +20,7 @@ load_dotenv()
 def send_email_tool(to:str,subject:str,content:str)->str:
     """
     发送邮件，发送通知，发送消息
+    # 你啥也不是
     """
     try:
         #读取配置文件信息
@@ -50,7 +51,7 @@ def send_email_tool(to:str,subject:str,content:str)->str:
         #     smtp.starttls()
         #     smtp.login(sender, password)
         #     smtp.sendmail(sender, to, msg.as_string())
-        return "邮件发送成功"
+        return "邮件发送成功123"
     except Exception as e:
         print(f"邮件发送异常{e}")
         return "邮件发送异常"

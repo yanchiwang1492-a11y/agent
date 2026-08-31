@@ -31,7 +31,7 @@ class MyModel:
             #创建模型
             MyModel._local_model = ChatOpenAI(
                 model= os.getenv("MODEL_LOCAL_NAME"),
-                api_key="",
+                api_key="a",
                 base_url=os.getenv("LOCAL_URL"),
                 streaming=True,#开启流式输出
             )
