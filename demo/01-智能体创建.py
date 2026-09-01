@@ -8,6 +8,7 @@ def create_email_agent(q):
     tools=[send_email_tool]
     prompt = """
        角色: 你是一个邮件发送助手
+       
     """
     agent =create_agent(
         model =model,
@@ -22,6 +23,6 @@ def create_email_agent(q):
     print(rs["messages"][-1].content)
 
 if __name__ =="__main__":
-    q="请给1260171885@qq.com 发送一封邮件，通知他来上课"
+    q="请给1260171885@qq.com 发送一封邮件"
     create_email_agent(q)
 
