@@ -44,9 +44,9 @@ def create_email_agent(q):
     print(rs["messages"][-1].content)
 
 if __name__ =="__main__":
-    q="请给767920412@qq.com 发送一封邮件，通知他来上课"
+    q="请给1260171885@qq.com 发送一封邮件，通知他来上课"
     q1="你是谁，你是干什么"
     q2="请解释一下什么是python"
-    q3="请给767920412qq.com 发送一封邮件，通知他来上课"
+    q3="请给1260171885@qq.com 发送一封邮件，通知他来上课"
     create_email_agent(q3)
 
