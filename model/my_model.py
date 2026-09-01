@@ -18,7 +18,7 @@ class MyModel:
         if MyModel._model is None:
             #创建模型
             MyModel._model = ChatOpenAI(
-                model= os.getenv("MODEL_LINE_NAME"),
+                model=os.getenv("MODEL_LINE_NAME"),
                 api_key=os.getenv("DASHSCOPE_API_KEY"),
                 streaming=True,#开启流式输出
             )
@@ -40,4 +40,3 @@ if __name__ =="__main__":
     model = MyModel.get_model()
     rs = model.invoke("你好")
     print(rs)
-

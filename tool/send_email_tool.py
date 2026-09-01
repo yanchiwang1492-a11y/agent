@@ -4,14 +4,17 @@ from dotenv import load_dotenv
 import os
 from email.mime.text import MIMEText
 import smtplib
+
+from schema.send_email_schema import EmailParams
+
 #定义工具参数的检验类
-class EmailParams(BaseModel):
-    #收件人
-    to:str = Field(...,description="收件人邮箱")
-    #邮件主题
-    subject: str = Field(..., description="邮件主题")
-    #正文
-    content: str = Field(..., description="邮件正文")
+# class EmailParams(BaseModel):
+#     #收件人
+#     to:str = Field(...,description="收件人邮箱")
+#     #邮件主题
+#     subject: str = Field(..., description="邮件主题")
+#     #正文
+#     content: str = Field(..., description="邮件正文")
 
 #读取配置文件
 load_dotenv()
