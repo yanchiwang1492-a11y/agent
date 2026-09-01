@@ -24,20 +24,19 @@ async def create_email_agent(q):
 
     human_msg = {"messages": [HumanMessage(content=q)]}
 
-#     async for c,m in agent.astream(human_msg,stream_mode="messages"):
-#         #print(m)
-#         if c.content:
-#             yield c.content
-#
-#
-# async def main():
-#     q = "请给1260171885@qq.com 发送一封邮件，通知他来上课"
-#     # 用 async for 接收 yield 出来的内容
-#     async for chunk in create_email_agent(q):
-#         print(chunk, end="")  # 逐块打印，不换行
+    async for c,m in agent.astream(human_msg,stream_mode="messages"):
+        #print(m)
+        if c.content:
+            yield c.content
+            # print(c.content, end="~")  # ← 直接在函数内打印
 
 
-# asyncio.run(main())
+async def main():
+    q = "请给1260171885@qq.com 发送一封邮件，通知他来上课"
+    async for chunk in create_email_agent(q):
+        print(chunk, end=",")  # 逐块打印，不换行
+
+asyncio.run(main())
 
 #测试大模型的异步流式输出
 # async def test_create_model(q):

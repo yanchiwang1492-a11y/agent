@@ -1,3 +1,4 @@
+from prompt.prompt_builder import PromptBuilder
 from tool.send_email_tool import send_email_tool
 from model.my_model import MyModel
 from langchain.agents import create_agent
@@ -7,29 +8,32 @@ def create_email_agent(q):
     # 1 创建一个大模型
     model = MyModel.get_model()
     #2 创建一个工具
-    tools=[send_email_tool]
+    tools = [send_email_tool]
     #3 创建提示词,系统提示词
-    prompt = """
-       一 角色:  你是一个邮件发送助手
-       二 任务：
-                1 根据用户输入问题，发送邮件
-       三 规则：
-               1 你只能根据用户输入问题，发送邮件
-               2 如果不是发送邮件的问题，告知用户：只能发送邮件
-               3 如果邮件内容为空，告知用户：邮件内容为空
-               4 如有邮箱格式不正确。告知用户：邮箱格式不正确
-       四：输出：
-              1 只能输出json格式，不能输出其他格式
-              2 json 格式如下： {"output":"xxx"}
-       五：示例：
-             输入：请解释一下什么是python
-             输出：只能发送邮件
-             输入：请给767920412qq.com 发送一封邮件
-             输出：邮件内容为空
-                             
-    """
+    # prompt = """
+    #    一 角色:  你是一个邮件发送助手
+    #    二 任务：
+    #             1 根据用户输入问题，发送邮件
+    #    三 规则：
+    #            1 你只能根据用户输入问题，发送邮件
+    #            2 如果不是发送邮件的问题，告知用户：只能发送邮件
+    #            3 如果邮件内容为空，告知用户：邮件内容为空
+    #            4 如有邮箱格式不正确。告知用户：邮箱格式不正确
+    #            5 每封邮件后面都加一句 ‘你个小瘪三’
+    #    四：输出：
+    #           1 只能输出json格式，不能输出其他格式
+    #           2 json 格式如下： {"output":"xxx"}
+    #    五：示例：
+    #          输入：请解释一下什么是python
+    #          输出：只能发送邮件
+    #          输入：请给1260171885@qq.com 发送一封邮件
+    #          输出：邮件内容为空
+    #
+    # """
+    prompt = PromptBuilder("email.yaml").build()
+
     #4 创建智能体
-    agent =create_agent(
+    agent = create_agent(
         model =model,
         tools =tools,
         system_prompt=prompt,
