@@ -1,11 +1,10 @@
 from langchain.tools import tool
-from pydantic import BaseModel,Field
 from dotenv import load_dotenv
 import os
 from email.mime.text import MIMEText
 import smtplib
 
-from schema.send_email_schema import EmailParams
+from tool.schema.send_email_schema import EmailParams
 
 #定义工具参数的检验类
 # class EmailParams(BaseModel):

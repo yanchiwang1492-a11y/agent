@@ -1,0 +1,63 @@
+import redis
+import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+"""
+短期记忆-窗口记忆
+"""
+class WindowMemory:
+
+    def __init__(self,session_id):
+        self.redis = redis.StrictRedis(host="localhost",port=6379,db=0,password='root')
+        #限制窗口记忆次数，生成环境是40次
+        self.window_size = int(os.getenv("WINDOW_MEMORY_ROUNDS"))
+        self.session_id = session_id
+        self.key = f"window_memory:{self.session_id}"
+        #过期时间
+        self.window_limit_time = int(os.getenv("WINDOW_MEMORY_TIME"))
+
+    #保存记忆
+    def save(self,role:str,content:str):
+       #构建字典
+       data = {"role":role,"content":content}
+       #添加到列表中
+       self.redis.rpush(self.key,json.dumps(data,ensure_ascii=False))
+       # self.redis.rpush(self.key, data) # Invalid input of type: 'dict'. Convert to a bytes, string, int or float first.
+       #设置保留窗口记忆
+       self.redis.ltrim(self.key,-self.window_size,-1)
+       #设置过期时间
+       self.redis.expire(self.key,self.window_limit_time)
+    #提取记忆
+    def query(self):
+        #判断建是否存在
+        if self.redis.exists(self.key):
+            data = self.redis.lrange(self.key,0,-1)
+            return [json.loads(i) for i in data]
+            # return data
+
+
+if __name__ =="__main__":
+    w= WindowMemory("001")
+    # 模拟人类消息添加
+    w.save("user", "你好1")
+    # 模拟AI回复消息
+    w.save("ai", "你好1，我是AI助手")
+    # 模拟人类消息添加
+    w.save("user", "你好2")
+    # 模拟AI回复消息
+    w.save("ai", "你好2，我是AI助手1")
+    # 模拟人类消息添加
+    w.save("user", "你好3")
+    # 模拟AI回复消息
+    w.save("ai", "你好3，我是AI助手2")
+    w.save("user", "你好4")
+    # 模拟AI回复消息
+    w.save("ai", "你好4，我是AI助手2")
+    w.save("user", "你好5")
+    # 模拟AI回复消息
+    w.save("ai", "你好5，我是AI助手2")
+    # 查询记忆
+    rs = w.query()
+    print(rs)
